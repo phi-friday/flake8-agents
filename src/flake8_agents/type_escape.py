@@ -169,16 +169,18 @@ def _suppression_diagnostics(lines: Sequence[str]) -> Iterable[Diagnostic]:
         line_index += 1
         return line
 
-    tokens = tokenize.generate_tokens(readline)
-    for token in tokens:
-        if token.type != tokenize.COMMENT:
-            continue
-        if _comment_violates_policy(token.string):
-            yield Diagnostic(
-                line_number=token.start[0],
-                column_number=token.start[1],
-                code=DiagnosticCode.TYPE_SUPPRESSION,
-            )
+    try:
+        for token in tokenize.generate_tokens(readline):
+            if token.type != tokenize.COMMENT:
+                continue
+            if _comment_violates_policy(token.string):
+                yield Diagnostic(
+                    line_number=token.start[0],
+                    column_number=token.start[1],
+                    code=DiagnosticCode.TYPE_SUPPRESSION,
+                )
+    except tokenize.TokenError:
+        return
 
 
 def _comment_violates_policy(comment: str) -> bool:
@@ -250,7 +252,7 @@ class _TypeEscapeVisitor(ast.NodeVisitor):
             )
         self.generic_visit(node)
 
-    def visit_TypeAlias(self, node: _TypeAliasNode) -> None:
+    def visit_TypeAlias(self, node: _TypeAliasNode) -> None:  # pragma: no cover
         self._check_annotation(node.value)
         self.generic_visit(node)
 

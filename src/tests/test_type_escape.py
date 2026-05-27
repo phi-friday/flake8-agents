@@ -350,6 +350,26 @@ def test_checker_covers_remaining_branch_behaviors() -> None:
     )
 
 
+def test_checker_reports_type_alias_marker_values() -> None:
+    source = "from typing import Any, TypeAlias\nLegacyPayload: TypeAlias = Any\n"
+
+    diagnostics = collect_diagnostics(source)
+
+    assert_diagnostics_match(diagnostics, (DiagnosticView(2, "AGT105"),))
+
+
+def test_checker_reports_variadic_dynamic_types_as_vague_callable() -> None:
+    source = (
+        "from typing import Any\n"
+        "def collect(*args: object, **kwargs: Any) -> None:\n"
+        "    return None\n"
+    )
+
+    diagnostics = collect_diagnostics(source)
+
+    assert_diagnostics_match(diagnostics, (DiagnosticView(2, "AGT104"),))
+
+
 def test_pyproject_registers_agt_entry_point() -> None:
     project = tomlkit.loads(Path("pyproject.toml").read_text(encoding="utf-8"))
 

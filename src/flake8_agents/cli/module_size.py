@@ -311,7 +311,7 @@ async def _run_git(
     )
     stdout, stderr = await process.communicate()
     returncode = process.returncode
-    if returncode is None:
+    if returncode is None:  # pragma: no cover
         returncode = _FINDING_FAILURE_EXIT_CODE
     return subprocess.CompletedProcess(
         args=(git_executable, "-C", str(cwd), *arguments),
@@ -322,9 +322,9 @@ async def _run_git(
 
 
 async def _gather(
-    futures: Sequence[asyncio.Future[Any] | Coroutine[Any, Any, Any]],
+    futures: Sequence[asyncio.Future[Any] | Coroutine[Any, Any, Any]],  # noqa: AGT105
 ) -> None:
-    if sys.version_info >= (3, 11):
+    if sys.version_info >= (3, 11):  # pragma: no cover
         async with asyncio.TaskGroup() as task_group:
             for future in futures:
                 task_group.create_task(future)

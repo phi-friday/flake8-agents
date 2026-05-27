@@ -147,6 +147,38 @@ def test_checker_reports_import_section_lifecycle_violations(
     assert_diagnostics_match(diagnostics, expected)
 
 
+@pytest.mark.parametrize(
+    ("source", "expected"),
+    [
+        pytest.param("from . import sibling\n", (), id="relative-from-import"),
+        pytest.param(
+            "import typing\n"
+            "if typing.TYPE_CHECKING:\n"
+            "    from collections.abc import Sequence\n"
+            "import ast\n",
+            (DiagnosticView(4, "AGT302"),),
+            id="qualified-type-checking-block",
+        ),
+        pytest.param(
+            "if (1).real:\n    pass\nimport ast\n",
+            (DiagnosticView(3, "AGT302"),),
+            id="attribute-without-name-root",
+        ),
+        pytest.param(
+            "if True:\n    pass\nimport ast\n",
+            (DiagnosticView(3, "AGT302"),),
+            id="non-name-condition",
+        ),
+    ],
+)
+def test_checker_covers_import_boundary_branch_edges(
+    source: str, expected: tuple[DiagnosticView, ...]
+) -> None:
+    diagnostics = collect_diagnostics(source)
+
+    assert_diagnostics_match(diagnostics, expected)
+
+
 def test_checker_accepts_ruff_owned_import_sorting_and_grouping_concerns() -> None:
     source = (
         "import sys\n"

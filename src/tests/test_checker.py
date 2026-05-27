@@ -302,6 +302,9 @@ def test_checker_reports_unused_numeric_agt_prefix_noqa(source: str) -> None:
         pytest.param("value: int = 1  # noqa: PLC0415\n", id="non-agt-code"),
         pytest.param("value: int = 1  # noqa\n", id="bare-inline-noqa"),
         pytest.param("# flake8: noqa\nvalue: int = 1\n", id="file-level-noqa"),
+        pytest.param(
+            "value: int = 1  # ordinary comment\n", id="non-noqa-inline-comment"
+        ),
         pytest.param("value: int = 1  # noqa: AGT\n", id="full-agt-prefix"),
     ],
 )
@@ -309,6 +312,14 @@ def test_checker_ignores_noqa_comments_outside_explicit_agt_scope(source: str) -
     diagnostics = collect_diagnostics(source)
 
     assert diagnostics == ()
+
+
+def test_checker_ignores_unparseable_noqa_token_stream() -> None:
+    checker = FlakeAgentsChecker(
+        tree=ast.parse(""), filename="sample.py", lines=["value = (  # noqa: AGT105\n"]
+    )
+
+    assert tuple(checker.run()) == ()
 
 
 def test_flake8_reports_unused_explicit_agt_noqa(tmp_path: Path) -> None:
