@@ -1,0 +1,76 @@
+[project]
+name = "flake8-agents"
+dynamic = ["version"]
+description = "Add your description here"
+readme = "README.md"
+authors = [{ name = "phi", email = "phi.friday@gmail.com" }]
+requires-python = ">=3.14, <3.15"
+dependencies = ["flake8>=7.3.0,<8.0.0"]
+[project.scripts]
+module-size = "flake8_agents.cli.module_size:main"
+[project.entry-points."flake8.extension"]
+AGT = "flake8_agents.checker:FlakeAgentsChecker"
+
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.build.hooks.vcs]
+version-file = "src/flake8_agents/_version.py"
+
+[dependency-groups]
+dev = ["poethepoet==0.46.0", "pyrefly==1.0.0", "ruff==0.15.14"]
+test = [
+    "anyio==4.13.0",
+    "pytest==9.0.3",
+    "pytest-cov==7.1.0",
+    "pytest-timeout==2.4.0",
+    "pytest-xdist==3.8.0",
+]
+
+[tool.uv]
+managed = true
+default-groups = ["dev", "test"]
+prerelease = "if-necessary-or-explicit"
+environments = ["sys_platform != 'win32'"]
+exclude-newer = "3 days"
+
+[tool.pytest]
+addopts = ["-ra", "-rP", "--color=yes"]
+testpaths = ["src/tests"]
+anyio_mode = "auto"
+
+[tool.poe.tasks.pyrefly]
+cmd = "pyrefly check src"
+[tool.poe.tasks.pyre]
+ref = "pyrefly"
+[tool.poe.tasks.format]
+cmd = "ruff format src"
+[tool.poe.tasks._lint]
+cmd = "ruff check src"
+[tool.poe.tasks._flake]
+cmd = "flake8 src"
+[tool.poe.tasks.module-size-file]
+cmd = "module-size --warn-lines 800 --error-lines 1000"
+[tool.poe.tasks.module-size]
+cmd = "module-size src --warn-lines 800 --error-lines 1000"
+[tool.poe.tasks.lint]
+sequence = ["format", "_lint", "pyrefly", "_flake", "module-size"]
+[tool.poe.tasks.test-cov]
+cmd = "pytest --cov=src/flake8_agents --cov-report term-missing --cov-fail-under=99"
+[tool.poe.tasks.test-report]
+cmd = "pytest --cov=src/flake8_agents --cov-report html"
+
+[tool.coverage.run]
+omit = ["./src/tests/**/*", "./src/flake8_agents/_version.py"]
+
+[tool.coverage.report]
+precision = 4
+exclude_lines = [
+    "pragma: no cover",
+    "if TYPE_CHECKING:",
+    "raise NotImplementedError",
+]

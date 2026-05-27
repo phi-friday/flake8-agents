@@ -1,0 +1,38 @@
+{
+  "files.associations": {
+    ".env.json": "json",
+    ".env.*.json": "json",
+    ".env.toml": "toml",
+    ".env.*.toml": "toml"
+  },
+  "editor.tabSize": 2,
+  "[python]": {
+    "editor.tabSize": 4,
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.formatOnSave": true,
+    "editor.formatOnType": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll": "explicit",
+      "source.organizeImports": "explicit"
+    },
+    "diffEditor.ignoreTrimWhitespace": true,
+  },
+  "json.schemas": [
+    {
+      "fileMatch": [
+        "/.env.json",
+        "/.env.*.json",
+        "!/.env.schema.json",
+      ],
+      "url": "/.env.schema.json"
+    }
+  ],
+  "json.schemaDownload.trustedDomains": {
+    "https://opencode.ai/config.json": true,
+    "https://models.dev/model-schema.json": true,
+    "https://inlang.com/schema/project-settings": true,
+    "https://inlang.com/schema/inlang-message-format": true,
+  },
+  "pyrefly.lspPath": ".venv/bin/pyrefly",
+  "git.addAICoAuthor": "off"
+}

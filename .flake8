@@ -1,0 +1,10 @@
+[flake8]
+select = AGT
+exclude =
+    .git,
+    __pycache__,
+    old,
+    build,
+    dist
+    .venv
+    samples
