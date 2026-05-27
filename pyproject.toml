@@ -73,6 +73,8 @@ sequence = ["format", "_lint", "pyrefly", "_flake", "module-size"]
 cmd = "pytest --cov=src/flake8_agents --cov-report term-missing --cov-fail-under=99"
 [tool.poe.tasks.test-report]
 cmd = "pytest --cov=src/flake8_agents --cov-report html"
+[tool.poe.tasks.tox]
+cmd = "tox --parallel all"
 
 [tool.coverage.run]
 omit = ["./src/tests/**/*", "./src/flake8_agents/_version.py"]
