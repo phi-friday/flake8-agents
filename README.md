@@ -4,6 +4,8 @@
 ![Flake8](https://img.shields.io/badge/Flake8-AGT-green)
 ![Typed](https://img.shields.io/badge/typing-typed-purple)
 ![License: MIT](https://img.shields.io/badge/license-MIT-informational)
+[![PyPI version](https://badge.fury.io/py/flake8-agents.svg)](https://badge.fury.io/py/flake8-agents)
+[![python version](https://img.shields.io/pypi/pyversions/flake8-agents.svg)](#)
 
 `flake8-agents` is a Flake8 plugin for codebases that use AI-generated Python.
 It exists because generated code often hides problems from static analysis with
