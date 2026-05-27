@@ -21,16 +21,6 @@ implementation requirements for production code and public/tested boundaries.
 - **AND** attributes or module-level constants are annotated when inference is
   not obvious.
 
-#### Scenario: Modern generic syntax is preferred
-
-- **WHEN** repository-owned Python code declares generic functions, methods,
-  classes, or type aliases
-- **THEN** it uses Python 3.14 type parameter syntax such as `def f[T](...)`,
-  `class Box[T]:`, `type Alias[T] = ...`, or `def decorator[**P, R](...)`
-  instead of module-level `TypeVar`, `ParamSpec`, or `TypeVarTuple`
-  declarations unless a documented runtime, checker, or third-party constraint
-  requires legacy syntax.
-
 #### Scenario: Broad dynamic types stay at true boundaries
 
 - **WHEN** a value's shape is known or can be validated

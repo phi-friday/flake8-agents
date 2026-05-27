@@ -232,7 +232,10 @@ def test_checker_accepts_standard_exceptions() -> None:
     assert_diagnostics_match(diagnostics, ())
 
 
-@pytest.mark.skipif(sys.version_info < (3, 12), reason="FIXME: add reason")
+@pytest.mark.skipif(
+    sys.version_info < (3, 12),
+    reason="PEP 695 type statements are available only on Python 3.12 and newer",
+)
 def test_checker_inspects_type_aliases_and_variadic_surfaces() -> None:
     source = (
         "from typing import Any, TypeAlias\n"

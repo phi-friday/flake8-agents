@@ -19,10 +19,10 @@ they already exist.
   `uv run pyrefly check <files>` -> relevant coverage-enabled
   `uv run pytest <files-or-dirs> -v --cov=src/flake8_agents`.
   `uv run flake8 <files-or-dirs>`
-  `uv run module-size-file <files-or-dirs>`
+  `uv run poe module-size-file <files-or-dirs>`
 - Before reporting broad completion, run from the repository root as applicable:
   `uv run ruff check src`, `uv run ruff format src`, `uv run pyrefly check src`,
-  `uv run flake8 src`, `uv run module-size-file src` and the coverage-enabled full suite.
+  `uv run flake8 src`, `uv run poe module-size-file src` and the coverage-enabled full suite.
 - Use `uv run poe test-cov` as the canonical coverage-enabled full-suite command.
   It runs pytest with coverage enabled and enforces the configured coverage
   threshold. Do not also run a separate full-suite `uv run pytest` unless
