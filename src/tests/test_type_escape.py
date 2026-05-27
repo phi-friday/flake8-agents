@@ -11,7 +11,7 @@ import pytest
 import tomlkit
 from typing_extensions import TypeVar
 
-from flake8_agents.type_escape import TypeEscapeChecker
+from flake8_agents import type_escape
 
 _T = TypeVar("_T", infer_variance=True)
 
@@ -28,7 +28,7 @@ def assert_diagnostics_match(actual: tuple[_T, ...], expected: tuple[_T, ...]) -
 
 def collect_diagnostics(source: str) -> tuple[DiagnosticView, ...]:
     tree = ast.parse(source)
-    checker = TypeEscapeChecker(
+    checker = type_escape.TypeEscapeChecker(
         tree=tree, filename="sample.py", lines=source.splitlines(keepends=True)
     )
     return tuple(
@@ -80,11 +80,6 @@ def collect_diagnostics(source: str) -> tuple[DiagnosticView, ...]:
             id="broad-any",
         ),
         pytest.param(
-            'from typing import TypeVar\nT = TypeVar("T")\n',
-            (DiagnosticView(2, "AGT106"),),
-            id="legacy-type-var",
-        ),
-        pytest.param(
             (
                 "class Box:\n"
                 "    @classmethod\n"
@@ -102,6 +97,65 @@ def test_checker_reports_rejected_type_escape_patterns(
     diagnostics = collect_diagnostics(source)
 
     assert_diagnostics_match(diagnostics, expected)
+
+
+def test_checker_accepts_legacy_type_parameters_before_native_generics(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(type_escape, "_SUPPORTS_NATIVE_TYPE_PARAMETERS", False)
+    source = (
+        "import typing\n"
+        "import typing_extensions as te\n"
+        "from typing import TypeVar\n"
+        'T = TypeVar("T")\n'
+        'P = typing.ParamSpec("P")\n'
+        'Ts = te.TypeVarTuple("Ts")\n'
+    )
+
+    diagnostics = collect_diagnostics(source)
+
+    assert_diagnostics_match(diagnostics, ())
+
+
+@pytest.mark.parametrize(
+    ("source", "expected"),
+    [
+        pytest.param(
+            'from typing import TypeVar as TV\nT = TV("T")\n',
+            (DiagnosticView(2, "AGT106"),),
+            id="import-alias",
+        ),
+        pytest.param(
+            'import typing\nP = typing.ParamSpec("P")\n',
+            (DiagnosticView(2, "AGT106"),),
+            id="qualified-typing",
+        ),
+        pytest.param(
+            'import typing_extensions as te\nTs = te.TypeVarTuple("Ts")\n',
+            (DiagnosticView(2, "AGT106"),),
+            id="qualified-typing-extensions",
+        ),
+    ],
+)
+def test_checker_reports_legacy_type_parameters_on_native_generics(
+    monkeypatch: pytest.MonkeyPatch, source: str, expected: tuple[DiagnosticView, ...]
+) -> None:
+    monkeypatch.setattr(type_escape, "_SUPPORTS_NATIVE_TYPE_PARAMETERS", True)
+
+    diagnostics = collect_diagnostics(source)
+
+    assert_diagnostics_match(diagnostics, expected)
+
+
+def test_checker_ignores_shadowed_legacy_type_parameter_factory_on_native_generics(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(type_escape, "_SUPPORTS_NATIVE_TYPE_PARAMETERS", True)
+    source = 'from typing import TypeVar\nTypeVar = str\nT = TypeVar("T")\n'
+
+    diagnostics = collect_diagnostics(source)
+
+    assert_diagnostics_match(diagnostics, ())
 
 
 def test_checker_resolves_aliases_and_ignores_shadowed_names() -> None:

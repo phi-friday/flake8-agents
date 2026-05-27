@@ -76,6 +76,8 @@ _CALLABLE_SUBSCRIPT_ARITY = 2
 _EQ_ARGUMENT_COUNT = 2
 
 
+_SUPPORTS_NATIVE_TYPE_PARAMETERS = sys.version_info >= (3, 12)
+
 _ImportAliases: TypeAlias = dict[str, str]
 _ShadowedNames: TypeAlias = set[str]
 _DiagnosticKey: TypeAlias = tuple[int, str]
@@ -313,7 +315,7 @@ class _TypeEscapeVisitor(ast.NodeVisitor):
     def _add_legacy_type_parameter_violation(
         self, node: ast.AST, target_name: str | None
     ) -> None:
-        if target_name is not None:
+        if target_name is not None and _SUPPORTS_NATIVE_TYPE_PARAMETERS:
             self._add_diagnostic(node, DiagnosticCode.LEGACY_TYPE_PARAMETER)
 
     def _push_shadowed_names(self, names: Iterable[str]) -> None:
