@@ -2,7 +2,9 @@ version = 1
 revision = 3
 requires-python = ">=3.10"
 resolution-markers = [
-    "sys_platform != 'win32'",
+    "python_full_version >= '3.13' and sys_platform != 'win32'",
+    "python_full_version == '3.12.*' and sys_platform != 'win32'",
+    "python_full_version < '3.12' and sys_platform != 'win32'",
 ]
 supported-markers = [
     "sys_platform != 'win32'",
@@ -19,7 +21,8 @@ source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "exceptiongroup", marker = "python_full_version < '3.11' and sys_platform != 'win32'" },
     { name = "idna", marker = "sys_platform != 'win32'" },
-    { name = "typing-extensions", marker = "python_full_version < '3.13' and sys_platform != 'win32'" },
+    { name = "typing-extensions", version = "4.5.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12' and sys_platform != 'win32'" },
+    { name = "typing-extensions", version = "4.6.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.12.*' and sys_platform != 'win32'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/19/14/2c5dd9f512b66549ae92767a9c7b330ae88e1932ca57876909410251fe13/anyio-4.13.0.tar.gz", hash = "sha256:334b70e641fd2221c1505b3890c69882fe4a2df910cba14d97019b90b24439dc", size = 231622, upload-time = "2026-03-24T12:59:09.671Z" }
 wheels = [
@@ -235,7 +238,9 @@ name = "flake8-agents"
 source = { editable = "." }
 dependencies = [
     { name = "flake8", marker = "sys_platform != 'win32'" },
-    { name = "typing-extensions", marker = "sys_platform != 'win32'" },
+    { name = "typing-extensions", version = "4.5.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12' and sys_platform != 'win32'" },
+    { name = "typing-extensions", version = "4.6.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.12.*' and sys_platform != 'win32'" },
+    { name = "typing-extensions", version = "4.7.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.13' and sys_platform != 'win32'" },
 ]
 
 [package.dev-dependencies]
@@ -243,7 +248,9 @@ dev = [
     { name = "poethepoet", marker = "sys_platform != 'win32'" },
     { name = "pyrefly", marker = "sys_platform != 'win32'" },
     { name = "ruff", marker = "sys_platform != 'win32'" },
-    { name = "typing-extensions", marker = "sys_platform != 'win32'" },
+    { name = "typing-extensions", version = "4.5.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12' and sys_platform != 'win32'" },
+    { name = "typing-extensions", version = "4.6.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.12.*' and sys_platform != 'win32'" },
+    { name = "typing-extensions", version = "4.7.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.13' and sys_platform != 'win32'" },
 ]
 flake = [
     { name = "flake8", marker = "sys_platform != 'win32'" },
@@ -261,7 +268,9 @@ test = [
 [package.metadata]
 requires-dist = [
     { name = "flake8" },
-    { name = "typing-extensions", specifier = ">=4.5.0" },
+    { name = "typing-extensions", marker = "python_full_version >= '3.10' and python_full_version < '3.12'", specifier = ">=4.5.0" },
+    { name = "typing-extensions", marker = "python_full_version == '3.12.*'", specifier = ">=4.6.0" },
+    { name = "typing-extensions", marker = "python_full_version >= '3.13'", specifier = ">=4.7.0" },
 ]
 
 [package.metadata.requires-dev]
@@ -269,7 +278,9 @@ dev = [
     { name = "poethepoet", specifier = "==0.46.0" },
     { name = "pyrefly", specifier = "==1.0.0" },
     { name = "ruff", specifier = "==0.15.14" },
-    { name = "typing-extensions", specifier = "==4.6.3" },
+    { name = "typing-extensions", marker = "python_full_version >= '3.10' and python_full_version < '3.12'", specifier = "==4.5.0" },
+    { name = "typing-extensions", marker = "python_full_version == '3.12.*'", specifier = "==4.6.3" },
+    { name = "typing-extensions", marker = "python_full_version >= '3.13'", specifier = "==4.7.1" },
 ]
 flake = [{ name = "flake8", specifier = ">=7.3.0,<8.0.0" }]
 test = [
@@ -612,11 +623,38 @@ wheels = [
 
 [[package]]
 name = "typing-extensions"
+version = "4.5.0"
+source = { registry = "https://pypi.org/simple" }
+resolution-markers = [
+    "python_full_version < '3.12' and sys_platform != 'win32'",
+]
+sdist = { url = "https://files.pythonhosted.org/packages/d3/20/06270dac7316220643c32ae61694e451c98f8caf4c8eab3aa80a2bedf0df/typing_extensions-4.5.0.tar.gz", hash = "sha256:5cb5f4a79139d699607b3ef622a1dedafa84e115ab0024e0d9c044a9479ca7cb", size = 52399, upload-time = "2023-02-15T00:17:55.502Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/31/25/5abcd82372d3d4a3932e1fa8c3dbf9efac10cc7c0d16e78467460571b404/typing_extensions-4.5.0-py3-none-any.whl", hash = "sha256:fb33085c39dd998ac16d1431ebc293a8b3eedd00fd4a32de0ff79002c19511b4", size = 27736, upload-time = "2023-02-15T00:17:53.726Z" },
+]
+
+[[package]]
+name = "typing-extensions"
 version = "4.6.3"
 source = { registry = "https://pypi.org/simple" }
+resolution-markers = [
+    "python_full_version == '3.12.*' and sys_platform != 'win32'",
+]
 sdist = { url = "https://files.pythonhosted.org/packages/42/56/cfaa7a5281734dadc842f3a22e50447c675a1c5a5b9f6ad8a07b467bffe7/typing_extensions-4.6.3.tar.gz", hash = "sha256:d91d5919357fe7f681a9f2b5b4cb2a5f1ef0a1e9f59c4d8ff0d3491e05c0ffd5", size = 65757, upload-time = "2023-06-01T23:55:36.332Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/5f/86/d9b1518d8e75b346a33eb59fa31bdbbee11459a7e2cc5be502fa779e96c5/typing_extensions-4.6.3-py3-none-any.whl", hash = "sha256:88a4153d8505aabbb4e13aacb7c486c2b4a33ca3b3f807914a9b4c844c471c26", size = 31329, upload-time = "2023-06-01T23:55:34.451Z" },
+]
+
+[[package]]
+name = "typing-extensions"
+version = "4.7.1"
+source = { registry = "https://pypi.org/simple" }
+resolution-markers = [
+    "python_full_version >= '3.13' and sys_platform != 'win32'",
+]
+sdist = { url = "https://files.pythonhosted.org/packages/3c/8b/0111dd7d6c1478bf83baa1cab85c686426c7a6274119aceb2bd9d35395ad/typing_extensions-4.7.1.tar.gz", hash = "sha256:b75ddc264f0ba5615db7ba217daeb99701ad295353c45f9e95963337ceeeffb2", size = 72876, upload-time = "2023-07-02T14:20:55.045Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/ec/6b/63cc3df74987c36fe26157ee12e09e8f9db4de771e0f3404263117e75b95/typing_extensions-4.7.1-py3-none-any.whl", hash = "sha256:440d5dd3af93b060174bf433bccd69b0babc3b15b1a8dca43789fd7f61514b36", size = 33232, upload-time = "2023-07-02T14:20:53.275Z" },
 ]
 
 [[package]]
