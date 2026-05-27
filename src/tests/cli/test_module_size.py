@@ -5,6 +5,7 @@ import os
 import shutil
 import subprocess
 import sys
+import sysconfig
 import threading
 from dataclasses import dataclass
 from pathlib import Path
@@ -50,12 +51,24 @@ def system_exit_code(error: SystemExit) -> int:
 
 def run_console_script(*arguments: str) -> subprocess.CompletedProcess[str]:
     return subprocess.run(
-        ("uv", "run", "module-size", *arguments),
+        (console_script_path("module-size"), *arguments),
         cwd=PROJECT_ROOT,
         check=False,
         capture_output=True,
         text=True,
     )
+
+
+def console_script_path(script_name: str) -> str:
+    scripts_path = sysconfig.get_path("scripts")
+    script_path = Path(scripts_path) / script_name
+    if sys.platform == "win32":
+        script_path = script_path.with_suffix(".exe")
+    resolved_path = shutil.which(script_path.name, path=scripts_path)
+    if resolved_path is None:
+        message = f"console script is not installed: {script_path}"
+        raise AssertionError(message)
+    return resolved_path
 
 
 def run_git(repository: Path, *arguments: str) -> None:
