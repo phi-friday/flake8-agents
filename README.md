@@ -1,6 +1,5 @@
 # flake8-agents
 
-![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue)
 ![Flake8](https://img.shields.io/badge/Flake8-AGT-green)
 ![Typed](https://img.shields.io/badge/typing-typed-purple)
 ![License: MIT](https://img.shields.io/badge/license-MIT-informational)
