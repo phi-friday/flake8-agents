@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import ast
 import re
+import sys
 import tokenize
 from collections import deque
 from dataclasses import dataclass
@@ -15,11 +16,17 @@ from flake8_agents._version_ import __version__  # noqa: AGT300
 if TYPE_CHECKING:
     from collections.abc import Iterable, Iterator, Sequence
 
-    class _TypeAliasNode(ast.AST):
-        value: ast.expr
 
+if sys.version_info < (3, 12):
+    if TYPE_CHECKING:
+
+        class _TypeAliasNode(ast.AST):
+            value: ast.expr
+
+    else:
+        _TypeAliasNode = ast.AST
 else:
-    _TypeAliasNode = ast.AST
+    _TypeAliasNode = ast.TypeAlias
 
 __all__ = ["TypeEscapeChecker"]
 
