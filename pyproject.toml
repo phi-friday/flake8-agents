@@ -5,7 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 authors = [{ name = "phi", email = "phi.friday@gmail.com" }]
 requires-python = ">=3.10"
-dependencies = ["flake8"]
+dependencies = ["flake8", "typing-extensions>=4.5.0"]
 license = "MIT"
 license-files = ["LICENSE"]
 [project.scripts]
@@ -25,7 +25,12 @@ version-file = "src/flake8_agents/_version.py"
 
 [dependency-groups]
 flake = ["flake8>=7.3.0,<8.0.0"]
-dev = ["poethepoet==0.46.0", "pyrefly==1.0.0", "ruff==0.15.14"]
+dev = [
+    "poethepoet==0.46.0",
+    "pyrefly==1.0.0",
+    "ruff==0.15.14",
+    "typing-extensions==4.5.0",
+]
 test = [
     "anyio==4.13.0",
     "pytest==9.0.3",
