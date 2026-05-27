@@ -81,6 +81,48 @@ wheels = [
 ]
 
 [[package]]
+name = "flake8-agents"
+source = { editable = "." }
+dependencies = [
+    { name = "flake8", marker = "sys_platform != 'win32'" },
+]
+
+[package.dev-dependencies]
+dev = [
+    { name = "poethepoet", marker = "sys_platform != 'win32'" },
+    { name = "pyrefly", marker = "sys_platform != 'win32'" },
+    { name = "ruff", marker = "sys_platform != 'win32'" },
+]
+flake = [
+    { name = "flake8", marker = "sys_platform != 'win32'" },
+]
+test = [
+    { name = "anyio", marker = "sys_platform != 'win32'" },
+    { name = "pytest", marker = "sys_platform != 'win32'" },
+    { name = "pytest-cov", marker = "sys_platform != 'win32'" },
+    { name = "pytest-timeout", marker = "sys_platform != 'win32'" },
+    { name = "pytest-xdist", marker = "sys_platform != 'win32'" },
+]
+
+[package.metadata]
+requires-dist = [{ name = "flake8" }]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "poethepoet", specifier = "==0.46.0" },
+    { name = "pyrefly", specifier = "==1.0.0" },
+    { name = "ruff", specifier = "==0.15.14" },
+]
+flake = [{ name = "flake8", specifier = ">=7.3.0,<8.0.0" }]
+test = [
+    { name = "anyio", specifier = "==4.13.0" },
+    { name = "pytest", specifier = "==9.0.3" },
+    { name = "pytest-cov", specifier = "==7.1.0" },
+    { name = "pytest-timeout", specifier = "==2.4.0" },
+    { name = "pytest-xdist", specifier = "==3.8.0" },
+]
+
+[[package]]
 name = "idna"
 version = "3.16"
 source = { registry = "https://pypi.org/simple" }
@@ -284,42 +326,4 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/86/a6/18f2bfc095a2ab4a78745644e428205532ce6653a5d0fa8501572891534d/ruff-0.15.14-py3-none-musllinux_1_2_armv7l.whl", hash = "sha256:958522aee105068640c2c2ceae08f413ae44d922f52a1374ac13d6a96032fc93", size = 10539517, upload-time = "2026-05-21T14:34:53.064Z" },
     { url = "https://files.pythonhosted.org/packages/54/3a/5a8b3b69c654d4e4bf1d246ac5b49cbcdac6eaab6905925f8915f31e3b80/ruff-0.15.14-py3-none-musllinux_1_2_i686.whl", hash = "sha256:f3707da619a143a2e8830e2abab8224478d69ace2d28cb6c20543ae97c36bf61", size = 11065169, upload-time = "2026-05-21T14:34:24.484Z" },
     { url = "https://files.pythonhosted.org/packages/ed/c5/8864e4e7925b836ea354b31d57641ec03830564e281a8b6f061f8c3e0ec1/ruff-0.15.14-py3-none-musllinux_1_2_x86_64.whl", hash = "sha256:bb01d645694e3ec0102105d07ef2d53703970407d59c04e59d3ba0b7a1d53553", size = 11560214, upload-time = "2026-05-21T14:34:50.975Z" },
-]
-
-[[package]]
-name = "flake8-agents"
-source = { editable = "." }
-dependencies = [
-    { name = "flake8", marker = "sys_platform != 'win32'" },
-]
-
-[package.dev-dependencies]
-dev = [
-    { name = "poethepoet", marker = "sys_platform != 'win32'" },
-    { name = "pyrefly", marker = "sys_platform != 'win32'" },
-    { name = "ruff", marker = "sys_platform != 'win32'" },
-]
-test = [
-    { name = "anyio", marker = "sys_platform != 'win32'" },
-    { name = "pytest", marker = "sys_platform != 'win32'" },
-    { name = "pytest-cov", marker = "sys_platform != 'win32'" },
-    { name = "pytest-timeout", marker = "sys_platform != 'win32'" },
-    { name = "pytest-xdist", marker = "sys_platform != 'win32'" },
-]
-
-[package.metadata]
-requires-dist = [{ name = "flake8", specifier = ">=7.3.0,<8.0.0" }]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "poethepoet", specifier = "==0.46.0" },
-    { name = "pyrefly", specifier = "==1.0.0" },
-    { name = "ruff", specifier = "==0.15.14" },
-]
-test = [
-    { name = "anyio", specifier = "==4.13.0" },
-    { name = "pytest", specifier = "==9.0.3" },
-    { name = "pytest-cov", specifier = "==7.1.0" },
-    { name = "pytest-timeout", specifier = "==2.4.0" },
-    { name = "pytest-xdist", specifier = "==3.8.0" },
 ]
