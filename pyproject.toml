@@ -1,7 +1,7 @@
 [project]
 name = "flake8-agents"
 dynamic = ["version"]
-description = "Flake8 plugin for agent-oriented Python quality guardrails"
+description = "Flake8 plugin for detecting static-analysis escape hatches in Python code"
 readme = "README.md"
 authors = [{ name = "phi", email = "phi.friday@gmail.com" }]
 requires-python = ">=3.10"

@@ -40,8 +40,6 @@ work, especially `src/tests/AGENTS.md` for tests.
 - `src/tests/cli/`: CLI-specific tests for `module-size`.
 - `openspec/specs/`: persistent behavior specs. Use them when a task references
   OpenSpec or changes a specified capability.
-- `samples/`: reference/legacy guard-script examples. Some scripts have 3.14t
-  uv-script shebangs; do not copy those as the project compatibility baseline.
 
 ## Development Commands
 
