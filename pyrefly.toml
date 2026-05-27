@@ -6,7 +6,7 @@ project-excludes = [
 ]
 search-path = ["src"]
 python-platform = "linux"
-python-version = "3.14"
+python-version = "3.10"
 min-severity = "warn"
 check-unannotated-defs = true
 infer-return-types = "checked"
