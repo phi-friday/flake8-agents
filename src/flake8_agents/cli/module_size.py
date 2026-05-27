@@ -7,12 +7,14 @@ import shutil
 import subprocess
 import sys
 from dataclasses import dataclass
-from enum import StrEnum
+from enum import Enum
 from pathlib import Path
-from typing import TYPE_CHECKING, NoReturn, override
+from typing import TYPE_CHECKING, Any, NoReturn
+
+from typing_extensions import override
 
 if TYPE_CHECKING:
-    from collections.abc import Sequence
+    from collections.abc import Coroutine, Sequence
 
 __all__ = ["FindingLevel", "ModuleSizeFinding", "main", "scan_paths"]
 
@@ -27,7 +29,7 @@ _EMPTY_EXCLUDE_PATTERNS: tuple[str, ...] = ()
 _EMPTY_EXCLUDE_REGEXES: tuple[re.Pattern[str], ...] = ()
 
 
-class FindingLevel(StrEnum):
+class FindingLevel(Enum):
     """Severity levels for module-size findings."""
 
     ERROR = "error"
@@ -185,7 +187,7 @@ def _compile_exclude_patterns(patterns: Sequence[str]) -> tuple[re.Pattern[str],
     for pattern in patterns:
         try:
             compiled_patterns.append(re.compile(pattern))
-        except re.error as error:
+        except re.error as error:  # noqa: PERF203
             message = f"invalid exclude regex: {pattern}: {error}"
             raise _ModuleSizeCliError(message) from error
     return tuple(compiled_patterns)
@@ -319,6 +321,17 @@ async def _run_git(
     )
 
 
+async def _gather(
+    futures: Sequence[asyncio.Future[Any] | Coroutine[Any, Any, Any]],
+) -> None:
+    if sys.version_info >= (3, 11):
+        async with asyncio.TaskGroup() as task_group:
+            for future in futures:
+                task_group.create_task(future)
+        return
+    await asyncio.gather(*futures)
+
+
 async def _line_counts_for_files(paths: Sequence[Path]) -> dict[Path, int]:
     if not paths:
         return {}
@@ -329,9 +342,7 @@ async def _line_counts_for_files(paths: Sequence[Path]) -> dict[Path, int]:
         async with semaphore:
             line_counts[path] = await asyncio.to_thread(_line_count_for_file, path)
 
-    async with asyncio.TaskGroup() as task_group:
-        for path in paths:
-            task_group.create_task(count_lines(path))
+    await _gather([count_lines(path) for path in paths])
     return line_counts
 
 

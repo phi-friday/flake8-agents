@@ -4,19 +4,20 @@ import asyncio
 import os
 import shutil
 import subprocess
+import sys
 import threading
 from dataclasses import dataclass
 from pathlib import Path
 from typing import TYPE_CHECKING
 
 import pytest
+from typing_extensions import Self
 
 from flake8_agents.cli import module_size
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine, Sequence
     from types import TracebackType
-    from typing import Self
 
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 
@@ -567,6 +568,7 @@ class TestAsyncScanning:
         assert worker_thread_ids
         assert all(thread_id != loop_thread_id for thread_id in worker_thread_ids)
 
+    @pytest.mark.skipif(sys.version_info < (3, 11), reason="FIXME: add reason")
     async def test_scan_paths_uses_task_group_for_line_counts(
         self, monkeypatch: pytest.MonkeyPatch, tmp_path: Path
     ) -> None:

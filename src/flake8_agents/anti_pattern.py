@@ -3,8 +3,10 @@ from __future__ import annotations
 import ast
 from collections import deque
 from dataclasses import dataclass
-from enum import StrEnum
-from typing import TYPE_CHECKING, Self, override
+from enum import Enum
+from typing import TYPE_CHECKING
+
+from typing_extensions import Self, override
 
 from flake8_agents._version_ import __version__  # noqa: AGT300
 
@@ -19,7 +21,7 @@ _IMPORTLIB_MODULE = "importlib"
 _IMPORT_MODULE_NAME = "import_module"
 
 
-class DiagnosticCode(StrEnum):
+class DiagnosticCode(Enum):
     GETATTR = "AGT200"
     SETATTR = "AGT201"
     VARS = "AGT202"

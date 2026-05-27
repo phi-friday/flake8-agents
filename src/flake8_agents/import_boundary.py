@@ -2,8 +2,8 @@ from __future__ import annotations
 
 import ast
 from dataclasses import dataclass
-from enum import StrEnum
-from typing import TYPE_CHECKING
+from enum import Enum
+from typing import TYPE_CHECKING, TypeAlias
 
 from flake8_agents._version_ import __version__  # noqa: AGT300
 
@@ -16,10 +16,10 @@ _PACKAGE_PREFIX = "flake8_agents"
 _RETIRED_IMPORTS: frozenset[str] = frozenset()
 
 
-type Flake8Result = tuple[int, int, str, type[ImportBoundaryChecker]]
+Flake8Result: TypeAlias = tuple[int, int, str, type["ImportBoundaryChecker"]]
 
 
-class DiagnosticCode(StrEnum):
+class DiagnosticCode(Enum):
     PRIVATE_PROJECT_IMPORT = "AGT300"
     RETIRED_PROJECT_IMPORT = "AGT301"
     IMPORT_SECTION_ORDER = "AGT302"

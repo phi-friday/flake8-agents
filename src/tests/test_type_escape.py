@@ -2,14 +2,18 @@ from __future__ import annotations
 
 import ast
 import subprocess
-import tomllib
+import sys
 from collections import Counter
 from dataclasses import dataclass
 from pathlib import Path
 
 import pytest
+import tomlkit
+from typing_extensions import TypeVar
 
 from flake8_agents.type_escape import TypeEscapeChecker
+
+_T = TypeVar("_T", infer_variance=True)
 
 
 @dataclass(frozen=True)
@@ -18,7 +22,7 @@ class DiagnosticView:
     code: str
 
 
-def assert_diagnostics_match[T](actual: tuple[T, ...], expected: tuple[T, ...]) -> None:
+def assert_diagnostics_match(actual: tuple[_T, ...], expected: tuple[_T, ...]) -> None:
     assert Counter(actual) == Counter(expected)
 
 
@@ -228,6 +232,7 @@ def test_checker_accepts_standard_exceptions() -> None:
     assert_diagnostics_match(diagnostics, ())
 
 
+@pytest.mark.skipif(sys.version_info < (3, 12), reason="FIXME: add reason")
 def test_checker_inspects_type_aliases_and_variadic_surfaces() -> None:
     source = (
         "from typing import Any, TypeAlias\n"
@@ -346,7 +351,7 @@ def test_checker_covers_remaining_branch_behaviors() -> None:
 
 
 def test_pyproject_registers_agt_entry_point() -> None:
-    project = tomllib.loads(Path("pyproject.toml").read_text(encoding="utf-8"))
+    project = tomlkit.loads(Path("pyproject.toml").read_text(encoding="utf-8"))
 
     entry_points = project["project"]["entry-points"]["flake8.extension"]
 

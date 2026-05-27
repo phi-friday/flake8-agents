@@ -5,13 +5,21 @@ import re
 import tokenize
 from collections import deque
 from dataclasses import dataclass
-from enum import StrEnum
-from typing import TYPE_CHECKING, Self, override
+from enum import Enum
+from typing import TYPE_CHECKING, TypeAlias
+
+from typing_extensions import Self, override
 
 from flake8_agents._version_ import __version__  # noqa: AGT300
 
 if TYPE_CHECKING:
     from collections.abc import Iterable, Iterator, Sequence
+
+    class _TypeAliasNode(ast.AST):
+        value: ast.expr
+
+else:
+    _TypeAliasNode = ast.AST
 
 __all__ = ["TypeEscapeChecker"]
 
@@ -61,13 +69,13 @@ _CALLABLE_SUBSCRIPT_ARITY = 2
 _EQ_ARGUMENT_COUNT = 2
 
 
-type _ImportAliases = dict[str, str]
-type _ShadowedNames = set[str]
-type _DiagnosticKey = tuple[int, str]
-type Flake8Result = tuple[int, int, str, type[TypeEscapeChecker]]
+_ImportAliases: TypeAlias = dict[str, str]
+_ShadowedNames: TypeAlias = set[str]
+_DiagnosticKey: TypeAlias = tuple[int, str]
+Flake8Result: TypeAlias = tuple[int, int, str, type["TypeEscapeChecker"]]
 
 
-class DiagnosticCode(StrEnum):
+class DiagnosticCode(Enum):
     TYPE_SUPPRESSION = "AGT100"
     UNSAFE_CAST = "AGT101"
     BROAD_OBJECT = "AGT102"
@@ -242,8 +250,7 @@ class _TypeEscapeVisitor(ast.NodeVisitor):
             )
         self.generic_visit(node)
 
-    @override
-    def visit_TypeAlias(self, node: ast.TypeAlias) -> None:
+    def visit_TypeAlias(self, node: _TypeAliasNode) -> None:
         self._check_annotation(node.value)
         self.generic_visit(node)
 

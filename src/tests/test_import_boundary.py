@@ -6,11 +6,14 @@ from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
 import pytest
+from typing_extensions import TypeVar
 
 from flake8_agents.import_boundary import ImportBoundaryChecker
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
+
+_T = TypeVar("_T", infer_variance=True)
 
 
 @dataclass(frozen=True)
@@ -19,7 +22,7 @@ class DiagnosticView:
     code: str
 
 
-def assert_diagnostics_match[T](actual: tuple[T, ...], expected: tuple[T, ...]) -> None:
+def assert_diagnostics_match(actual: tuple[_T, ...], expected: tuple[_T, ...]) -> None:
     assert Counter(actual) == Counter(expected)
 
 

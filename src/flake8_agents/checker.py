@@ -4,7 +4,7 @@ import re
 import tokenize
 from dataclasses import dataclass
 from itertools import chain
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, TypeAlias
 
 from flake8_agents._version_ import __version__  # noqa: AGT300
 from flake8_agents.anti_pattern import AntiPatternChecker
@@ -19,10 +19,12 @@ if TYPE_CHECKING:
 __all__ = ["FlakeAgentsChecker"]
 
 
-type _OwnedCheckerType = type[
+_OwnedCheckerType: TypeAlias = type[
     AntiPatternChecker | ImportBoundaryChecker | TypeEscapeChecker
 ]
-type Flake8Result = tuple[int, int, str, _OwnedCheckerType | type[FlakeAgentsChecker]]
+Flake8Result: TypeAlias = tuple[
+    int, int, str, _OwnedCheckerType | type["FlakeAgentsChecker"]
+]
 
 _NOQA_INLINE_RE = re.compile(
     r"# noqa(?::[\s]?(?P<codes>([A-Z]+[0-9]*(?:[,\s]+)?)+))?", re.IGNORECASE

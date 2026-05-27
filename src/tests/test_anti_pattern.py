@@ -5,8 +5,11 @@ from collections import Counter
 from dataclasses import dataclass
 
 import pytest
+from typing_extensions import TypeVar
 
 from flake8_agents.anti_pattern import AntiPatternChecker
+
+_T = TypeVar("_T", infer_variance=True)
 
 
 @dataclass(frozen=True)
@@ -15,7 +18,7 @@ class DiagnosticView:
     code: str
 
 
-def assert_diagnostics_match[T](actual: tuple[T, ...], expected: tuple[T, ...]) -> None:
+def assert_diagnostics_match(actual: tuple[_T, ...], expected: tuple[_T, ...]) -> None:
     assert Counter(actual) == Counter(expected)
 
 
