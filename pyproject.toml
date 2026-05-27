@@ -46,7 +46,7 @@ source = "vcs"
 version-file = "src/flake8_agents/_version.py"
 
 [dependency-groups]
-flake = ["flake8>=7.3.0,<8.0.0"]
+flake = ["flake8==7.3.0"]
 dev = [
     "poethepoet==0.46.0",
     "pyrefly==1.0.0",
