@@ -26,15 +26,3 @@ with the repository's supported Python versions.
 - **THEN** it uses bounded command-scoped concurrency without requiring APIs that
   are unavailable on supported Python versions.
 
-## ADDED Requirements
-
-### Requirement: Module-size capability owns CLI presentation contract
-The module-size CLI capability SHALL own the active human-readable output contract for `module-size`, including deterministic finding order, displayed columns, output streams, and warning suppression behavior.
-
-#### Scenario: Separate table-formatting capability is retired
-- **WHEN** stale CLI table-formatting specs are removed during consolidation
-- **THEN** `module-size-cli` still specifies the active `module-size` finding output contract.
-
-#### Scenario: Unsupported CLI help and logging specs are not active contracts
-- **WHEN** specs describing colorized help, no-color handling, verbose logging, or debug logging are not implemented by the current CLI
-- **THEN** those specs are removed or archived rather than treated as current `module-size` requirements.

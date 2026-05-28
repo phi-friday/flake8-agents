@@ -1,9 +1,11 @@
-# suppression-hygiene Specification
+# AGT suppression-hygiene Specification
 
 ## Purpose
-The system SHALL audit explicit numeric AGT `# noqa` suppressions so stale or unmatched AGT codes are surfaced without affecting bare, digitless, or non-`AGT` suppressions.
+
+Define `AGT001` diagnostics for explicit numeric AGT `# noqa` suppressions so stale or unmatched AGT codes are surfaced without affecting bare, digitless, non-AGT, or file-level suppressions.
 
 ## Requirements
+
 ### Requirement: Explicit AGT noqa suppressions are audited
 The system SHALL report `AGT001` when an explicit inline `# noqa` comment names one or more numeric AGT suppression codes that do not match any raw AGT diagnostic on the applicable flake8-mapped line.
 
@@ -63,3 +65,11 @@ The system SHALL NOT report `AGT001` solely for bare inline `# noqa` comments, d
 #### Scenario: File-level noqa is ignored by suppression hygiene
 - **WHEN** Python source contains a file-level `# flake8: noqa` comment
 - **THEN** the AGT suppression-hygiene capability does not define any `AGT001` diagnostic for that file-level comment.
+
+
+### Requirement: Suppression-hygiene capability is canonical for AGT001 behavior
+The suppression-hygiene capability SHALL be the canonical OpenSpec contract for `AGT001` unused explicit AGT `# noqa` diagnostics and their flake8 line-mapping behavior.
+
+#### Scenario: Contributor guidance references AGT001 contract
+- **WHEN** repository guidance needs to mention unused AGT `noqa` suppression behavior
+- **THEN** it references this capability and flake8 validation instead of duplicating the matching rules.

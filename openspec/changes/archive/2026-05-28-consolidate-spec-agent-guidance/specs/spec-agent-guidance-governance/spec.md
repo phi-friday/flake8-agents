@@ -1,7 +1,7 @@
 ## ADDED Requirements
 
 ### Requirement: Persistent specs describe current contracts
-Persistent OpenSpec capabilities SHALL describe current product behavior, current repository-maintenance contracts, or explicit change proposals, and SHALL NOT preserve stale requirements for absent tooling surfaces or historical implementation phases.
+Persistent OpenSpec capabilities SHALL describe current product behavior or current repository-maintenance contracts, and SHALL NOT preserve stale requirements for absent tooling surfaces or historical implementation phases.
 
 #### Scenario: Obsolete capability is removed from active specs
 - **WHEN** a persistent spec describes a guard script, CLI option, validation command, or documentation policy that the current repository does not implement and this change does not intend to implement
