@@ -4,10 +4,10 @@ dynamic = ["version"]
 description = "Flake8 plugin for detecting static-analysis escape hatches in Python code"
 readme = "README.md"
 authors = [{ name = "phi", email = "phi.friday@gmail.com" }]
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 dependencies = [
     "flake8",
-    "typing-extensions>=4.5.0; python_version >= '3.10' and python_version < '3.12'",
+    "typing-extensions>=4.5.0; python_version < '3.12'",
     "typing-extensions>=4.6.0; python_version >= '3.12' and python_version < '3.13'",
     "typing-extensions>=4.12.0; python_version >= '3.13'",
 ]
@@ -18,7 +18,6 @@ classifiers = [
     "Intended Audience :: Developers",
     "Development Status :: 4 - Beta",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
@@ -51,7 +50,7 @@ dev = [
     "poethepoet==0.46.0",
     "pyrefly==1.0.0",
     "ruff==0.15.14",
-    "typing-extensions==4.5.0; python_version >= '3.10' and python_version < '3.12'",
+    "typing-extensions==4.5.0; python_version < '3.12'",
     "typing-extensions==4.6.3; python_version >= '3.12' and python_version < '3.13'",
     "typing-extensions==4.12.2; python_version >= '3.13'",
 ]
