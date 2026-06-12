@@ -6,6 +6,8 @@
 [![PyPI version](https://badge.fury.io/py/flake8-agents.svg)](https://badge.fury.io/py/flake8-agents)
 [![python version](https://img.shields.io/pypi/pyversions/flake8-agents.svg)](#)
 
+[English](README.md) | [한국어](README.kr.md)
+
 `flake8-agents` is a Flake8 plugin for codebases that use AI-generated Python.
 It exists because generated code often hides problems from static analysis with
 reflection, broad types, casts, raw namespace access, and stale suppressions.
@@ -99,6 +101,18 @@ PATH                              LINES  LEVEL    THRESHOLD
 
 `flake8-agents` supports Python `>=3.10` and is typed (`py.typed`). Runtime
 dependencies are intentionally small: `flake8` and `typing-extensions`.
+
+## Design note
+
+`AGT` rules prefer code that people and static tools can inspect. They are not
+a blanket claim that dynamic declarations, dynamic imports, casts, broad types,
+or suppressions are anti-patterns in every codebase. The concern is AI-generated
+code overusing those escape hatches until intent and program shape are hard for
+humans to audit. AI models may improve, but today's generated code can take the
+shortest path to satisfy the last prompt, paper over uncertainty, or make an
+incomplete change look complete. These rules also make those moves harder to
+hide. When the trade-off is intentional, keep the code and add a targeted
+explicit `noqa` with the specific diagnostic code, for example `# noqa: AGT204`.
 
 ## License
 
