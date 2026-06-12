@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-`flake8-agents` is a Python 3.10+ Flake8 plugin for agent-oriented Python quality guardrails. It ships the installed `AGT` Flake8 extension and a separate `module-size` CLI.
+`flake8-agents` is a Python 3.11+ Flake8 plugin for agent-oriented Python quality guardrails. It ships the installed `AGT` Flake8 extension and a separate `module-size` CLI.
 
 Treat `pyproject.toml`, `ruff.toml`, `pyrefly.toml`, and executable validation output as the final authority for local tooling behavior. Follow any closer `AGENTS.md` file for subdirectory work, especially `src/tests/AGENTS.md` for tests.
 
@@ -63,11 +63,11 @@ uv run module-size src --warn-lines 800 --error-lines 1000
 
 ## Code Conventions & Common Patterns
 
-- Runtime support is Python `>=3.10`; Ruff and Pyrefly target `py310`. Do not introduce unguarded 3.11+ or 3.12+ syntax/APIs. In particular, do not use PEP 695 generic syntax or `type` statements in production code while 3.10 is supported.
+- Runtime support is Python `>=3.11`; Ruff targets `py311`, and Pyrefly uses Python `3.11`. Do not introduce unguarded 3.12+ syntax/APIs. In particular, do not use PEP 695 generic syntax or `type` statements in production code while 3.11 is supported.
 - Use absolute imports from `flake8_agents...`; avoid relative imports for package code.
 - Keep imports and exports explicit. Public/package-internal modules that expose symbols should define a sorted literal `__all__` after imports and before other declarations.
 - Keep module tops ordered: future imports, runtime imports, type-only imports or `if TYPE_CHECKING:`, `__all__`, constants, classes, functions.
-- Use `typing_extensions` for compatibility helpers unavailable in Python 3.10 stdlib, such as `override`.
+- Use stdlib `typing` for helpers available in Python 3.11, and keep `typing_extensions` for compatibility helpers unavailable there, such as `override`.
 - Keep Flake8 checkers side-effect-light: derive diagnostics from AST and source lines, preserve stable line/column/message contracts, and avoid global mutable state.
 - Ruff controls formatting: 88 columns, double quotes, space indentation, and Google-style docstrings when docstrings are needed.
 - Prefer descriptive names like `error_code`, `rule_name`, `node`, `line_number`, and `expected_diagnostics` over vague names.
@@ -87,7 +87,7 @@ uv run module-size src --warn-lines 800 --error-lines 1000
 
 ## Runtime/Tooling Preferences
 
-- Supported Python range is 3.10 through current classifiers; keep compatibility paths explicit when newer APIs are useful.
+- Supported Python range is 3.11 through current classifiers; keep compatibility paths explicit when newer APIs are useful.
 - Runtime dependencies are intentionally small: `flake8` and `typing-extensions`. Avoid adding dependencies without a clear package-level reason.
 - Build backend is `hatchling` with `hatch-vcs`; `_version.py` is generated and excluded from normal lint/type scope.
 - `uv` default groups include flake, dev, and test tooling. The configured uv environment excludes Windows (`sys_platform != 'win32'`).

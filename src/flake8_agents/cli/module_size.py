@@ -9,7 +9,7 @@ import sys
 from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, NoReturn
+from typing import TYPE_CHECKING, NoReturn
 
 from typing_extensions import override
 
@@ -187,7 +187,7 @@ def _compile_exclude_patterns(patterns: Sequence[str]) -> tuple[re.Pattern[str],
     for pattern in patterns:
         try:
             compiled_patterns.append(re.compile(pattern))
-        except re.error as error:  # noqa: PERF203
+        except re.error as error:
             message = f"invalid exclude regex: {pattern}: {error}"
             raise _ModuleSizeCliError(message) from error
     return tuple(compiled_patterns)
@@ -321,15 +321,10 @@ async def _run_git(
     )
 
 
-async def _gather(
-    futures: Sequence[asyncio.Future[Any] | Coroutine[Any, Any, Any]],  # noqa: AGT105
-) -> None:
-    if sys.version_info >= (3, 11):  # pragma: no cover
-        async with asyncio.TaskGroup() as task_group:
-            for future in futures:
-                task_group.create_task(future)
-        return
-    await asyncio.gather(*futures)
+async def _gather(coroutines: Sequence[Coroutine[None, None, None]]) -> None:
+    async with asyncio.TaskGroup() as task_group:
+        for coroutine in coroutines:
+            task_group.create_task(coroutine)
 
 
 async def _line_counts_for_files(paths: Sequence[Path]) -> dict[Path, int]:

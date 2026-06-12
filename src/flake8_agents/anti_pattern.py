@@ -4,9 +4,9 @@ import ast
 from collections import deque
 from dataclasses import dataclass
 from enum import Enum
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Self
 
-from typing_extensions import Self, override
+from typing_extensions import override
 
 from flake8_agents._version_ import __version__  # noqa: AGT300
 

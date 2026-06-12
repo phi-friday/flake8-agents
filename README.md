@@ -99,7 +99,7 @@ PATH                              LINES  LEVEL    THRESHOLD
 
 ## Python support
 
-`flake8-agents` supports Python `>=3.10` and is typed (`py.typed`). Runtime
+`flake8-agents` supports Python `>=3.11` and is typed (`py.typed`). Runtime
 dependencies are intentionally small: `flake8` and `typing-extensions`.
 
 ## Design note

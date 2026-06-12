@@ -1,6 +1,6 @@
 ## Context
 
-`TypeEscapeChecker` emits AGT106 when module-level assignments call `TypeVar`, `ParamSpec`, or `TypeVarTuple` through recognized `typing` or `typing_extensions` aliases. The diagnostic message recommends PEP 695 type parameter syntax, which is only syntactically available on Python 3.12 and newer. The package still supports Python 3.10+, and source analyzed while running on Python 3.10 or 3.11 cannot necessarily replace legacy factories with native type parameter syntax.
+`TypeEscapeChecker` emits AGT106 when module-level assignments call `TypeVar`, `ParamSpec`, or `TypeVarTuple` through recognized `typing` or `typing_extensions` aliases. The diagnostic message recommends PEP 695 type parameter syntax, which is only syntactically available on Python 3.12 and newer. The package still supports Python 3.11+, and source analyzed while running on Python 3.11 cannot necessarily replace legacy factories with native type parameter syntax.
 
 ## Goals / Non-Goals
 

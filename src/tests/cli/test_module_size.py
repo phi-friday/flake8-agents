@@ -9,10 +9,9 @@ import sysconfig
 import threading
 from dataclasses import dataclass
 from pathlib import Path
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Self
 
 import pytest
-from typing_extensions import Self
 
 from flake8_agents.cli import module_size
 
@@ -581,10 +580,6 @@ class TestAsyncScanning:
         assert worker_thread_ids
         assert all(thread_id != loop_thread_id for thread_id in worker_thread_ids)
 
-    @pytest.mark.skipif(
-        sys.version_info < (3, 11),
-        reason="asyncio.TaskGroup is available only on Python 3.11 and newer",
-    )
     async def test_scan_paths_uses_task_group_for_line_counts(
         self, monkeypatch: pytest.MonkeyPatch, tmp_path: Path
     ) -> None:
