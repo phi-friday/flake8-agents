@@ -64,6 +64,7 @@ select = AGT
 | `AGT209` | aliasing raw `__dict__` | `namespace = target.__dict__` |
 | `AGT210` | indexing raw `__dict__` aliases | `value = namespace["name"]` |
 | `AGT211` | aliasing dotted module imports | `import package.module as alias` |
+| `AGT212` | `types.SimpleNamespace` dynamic attribute bags | `data = types.SimpleNamespace(name="value")` |
 
 ### Import boundaries
 
