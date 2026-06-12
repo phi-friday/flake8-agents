@@ -119,6 +119,95 @@ def test_checker_reports_rejected_anti_pattern_patterns(
     assert_diagnostics_match(diagnostics, expected)
 
 
+def test_checker_reports_simple_namespace_construction_aliases() -> None:
+    source = (
+        "from types import SimpleNamespace\n"
+        "from types import SimpleNamespace as Namespace\n"
+        "import types\n"
+        "import types as type_module\n"
+        "first = SimpleNamespace(name='first')\n"
+        "second = Namespace(name='second')\n"
+        "third = types.SimpleNamespace(name='third')\n"
+        "fourth = type_module.SimpleNamespace(name='fourth')\n"
+    )
+
+    diagnostics = collect_diagnostics(source)
+
+    assert_diagnostics_match(
+        diagnostics,
+        (
+            DiagnosticView(5, "AGT212"),
+            DiagnosticView(6, "AGT212"),
+            DiagnosticView(7, "AGT212"),
+            DiagnosticView(8, "AGT212"),
+        ),
+    )
+
+
+def test_checker_reports_simple_namespace_annotations() -> None:
+    source = (
+        "from typing import TypeAlias\n"
+        "from types import SimpleNamespace\n"
+        "import types as type_module\n"
+        "def build(\n"
+        "    value: SimpleNamespace,\n"
+        ") -> type_module.SimpleNamespace:\n"
+        "    local: SimpleNamespace\n"
+        "Alias: TypeAlias = SimpleNamespace\n"
+        "QuotedAlias: TypeAlias = 'type_module.SimpleNamespace'\n"
+        "def quoted(\n"
+        "    value: 'SimpleNamespace',\n"
+        ") -> 'type_module.SimpleNamespace':\n"
+        "    pass\n"
+    )
+
+    diagnostics = collect_diagnostics(source)
+
+    assert_diagnostics_match(
+        diagnostics,
+        (
+            DiagnosticView(5, "AGT212"),
+            DiagnosticView(6, "AGT212"),
+            DiagnosticView(7, "AGT212"),
+            DiagnosticView(8, "AGT212"),
+            DiagnosticView(9, "AGT212"),
+            DiagnosticView(11, "AGT212"),
+            DiagnosticView(12, "AGT212"),
+        ),
+    )
+
+
+def test_checker_accepts_simple_namespace_false_positives() -> None:
+    source = (
+        "from argparse import Namespace\n"
+        "from dataclasses import dataclass\n"
+        "from types import SimpleNamespace\n"
+        "from types import SimpleNamespace as ImportedOnly\n"
+        "from typing import NamedTuple, TypedDict\n"
+        "import types\n"
+        "import types as imported_types\n"
+        "imported_reference = SimpleNamespace\n"
+        "class SimpleNamespace:\n"
+        "    pass\n"
+        "safe = SimpleNamespace()\n"
+        "types = factory()\n"
+        "safe_module = types.SimpleNamespace()\n"
+        "options = Namespace()\n"
+        "parsed: Namespace\n"
+        "@dataclass\n"
+        "class Record:\n"
+        "    name: str\n"
+        "class TupleRecord(NamedTuple):\n"
+        "    name: str\n"
+        "class DictRecord(TypedDict):\n"
+        "    name: str\n"
+    )
+
+    diagnostics = collect_diagnostics(source)
+
+    assert_diagnostics_match(diagnostics, ())
+
+
 def test_checker_reports_import_module_aliases() -> None:
     source = (
         "import importlib as il\n"

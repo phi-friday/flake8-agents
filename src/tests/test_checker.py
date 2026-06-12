@@ -121,6 +121,18 @@ def test_flake8_reports_all_rule_family_diagnostics(tmp_path: Path) -> None:
     assert "sample.py:4:8: AGT200" in result.stdout
 
 
+def test_flake8_reports_simple_namespace_when_selected(tmp_path: Path) -> None:
+    source = "from types import SimpleNamespace\nvalue = SimpleNamespace()\n"
+
+    result = run_flake8(tmp_path, source, "--select", "AGT212")
+
+    assert result.returncode == 1
+    assert (
+        "sample.py:2:9: AGT212 avoid SimpleNamespace dynamic attribute bags"
+        in result.stdout
+    )
+
+
 def test_flake8_reports_mixed_diagnostics_by_source_location(tmp_path: Path) -> None:
     source = (
         "from typing import Any\n"
