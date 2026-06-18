@@ -48,8 +48,8 @@ version-file = "src/flake8_agents/_version.py"
 flake = ["flake8==7.3.0"]
 dev = [
     "poethepoet==0.46.0",
-    "pyrefly==1.0.0",
-    "ruff==0.15.14",
+    "pyrefly==1.1.0",
+    "ruff==0.15.17",
     "typing-extensions==4.5.0; python_version < '3.12'",
     "typing-extensions==4.6.3; python_version >= '3.12' and python_version < '3.13'",
     "typing-extensions==4.12.2; python_version >= '3.13'",
@@ -70,6 +70,10 @@ default-groups = ["flake", "dev", "test"]
 prerelease = "if-necessary-or-explicit"
 environments = ["sys_platform != 'win32'"]
 exclude-newer = "3 days"
+
+[tool.uv.exclude-newer-package]
+pyrefly = false
+ruff = false
 
 [tool.pytest]
 addopts = ["-ra", "-rP", "--color=yes"]
